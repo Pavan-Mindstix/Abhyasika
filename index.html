@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="color-scheme" content="light dark">
+    <title>Abhyasikha School Supervision</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="app">
+        <header class="topbar">
+            <div class="brand">
+                <div class="brandmark"><svg class="icon" viewBox="0 0 24 24">
+                        <path d="M3 21h18M5 21V9l7-5 7 5v12M9 21v-6h6v6M9 10h.01M15 10h.01" />
+                    </svg></div>
+                <div>
+                    <h1>Abhyasikha School Supervision</h1>
+                    <p>Supervisor school supervision record</p>
+                </div>
+            </div><button class="iconbtn" id="themeBtn" onclick="toggleTheme()" aria-label="Change theme"></button>
+        </header>
+
+        <section id="home" class="screen active">
+            <div class="hero">
+                <div class="eyebrow">Abhyasikha Program</div>
+                <h2>School Supervision, Records</h2>
+                <p>Use live supervision when you are at the school now. Use previous supervision for an earlier
+                    completed visit.</p>
+            </div>
+            <div class="cards"><button class="choice" onclick="start('LIVE')">
+                    <div class="ico"><svg class="icon" viewBox="0 0 24 24">
+                            <path d="M12 22s7-5.2 7-12A7 7 0 0 0 5 10c0 6.8 7 12 7 12Z" />
+                            <circle cx="12" cy="10" r="2.5" />
+                        </svg></div><strong>Live Supervision</strong><span>You are at the school now.</span>
+                </button><button class="choice" onclick="start('PREVIOUS')">
+                    <div class="ico"><svg class="icon" viewBox="0 0 24 24">
+                            <path d="M3 12a9 9 0 1 0 3-6.7" />
+                            <path d="M3 4v6h6" />
+                            <path d="M12 7v5l3 2" />
+                        </svg></div><strong>Previous Supervision</strong><span>Enter a visit completed earlier.</span>
+                </button></div>
+        </section>
+
+        <section id="details" class="screen">
+            <button class="btn secondary back details-back-top" onclick="show('home')"><svg class="icon" viewBox="0 0 24 24">
+                    <path d="m15 18-6-6 6-6" />
+                </svg>Back</button>
+            <h2>Supervision details</h2>
+            <div class="panel">
+                <div class="formgrid">
+                    <div class="field"><label>Supervisor Name <span class="required">*</span></label><input id="visitor"
+                            autocomplete="name" maxlength="80">
+                        <div class="error" id="visitorErr"></div>
+                    </div>
+                    <div class="field"><label>School Name <span class="required">*</span></label><input id="school"
+                            autocomplete="organization" maxlength="150">
+                        <div class="error" id="schoolErr"></div>
+                    </div>
+                    <div class="field"><label>Visit Date <span class="required">*</span></label><input id="date"
+                            type="date">
+                        <div class="hint" id="dateHint"></div>
+                        <div class="error" id="dateErr"></div>
+                    </div>
+                    <div class="field"><label>School Opening Time <span class="required">*</span></label><input
+                            id="open" type="time">
+                        <div class="hint">Enter opening time first.</div>
+                        <div class="error" id="openErr"></div>
+                    </div>
+                    <div class="field"><label>School Closing Time <span class="required">*</span></label><input
+                            id="close" type="time" disabled>
+                        <div class="hint">Closing must be more than 2 hours after opening.</div>
+                        <div class="error" id="closeErr"></div>
+                    </div>
+                    <div class="field full"><label>Notes</label><textarea id="notes" maxlength="500"></textarea>
+                        <div class="hint">Maximum 500 characters.</div>
+                        <div class="error"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="details-actionbar">
+                <button class="btn secondary back details-back-mobile" onclick="show('home')"><svg class="icon" viewBox="0 0 24 24">
+                        <path d="m15 18-6-6 6-6" />
+                    </svg>Back</button>
+                <div class="actions"><button class="btn primary" id="continueBtn" onclick="continueDetails()">Continue <svg class="icon" viewBox="0 0 24 24">
+                            <path d="m9 18 6-6-6-6" />
+                        </svg></button></div>
+            </div>
+        </section>
+
+        <section id="checkin" class="screen">
+            <button class="btn secondary back checkin-back-top" onclick="show('details')"><svg class="icon"
+                    viewBox="0 0 24 24">
+                    <path d="m15 18-6-6 6-6" />
+                </svg>Back</button>
+            <h2>Check-in</h2>
+            <p class="note">Your session becomes active only when you press <b>Check in now</b>.
+            </p>
+            <div class="panel">
+                <div class="panelhead">
+                    <div>
+                        <div class="paneltitle"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M12 22s7-5.2 7-12A7 7 0 0 0 5 10c0 6.8 7 12 7 12Z" />
+                                <circle cx="12" cy="10" r="2.5" />
+                            </svg>Location verification</div>
+                        <div id="locText" class="statusline">Location permission is required.</div>
+                        <div id="locMeta" class="meta"></div>
+                    </div>
+                </div>
+                <div class="actions"><button class="btn secondary" onclick="getLocation()"><svg class="icon"
+                            viewBox="0 0 24 24">
+                            <path
+                                d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1" />
+                            <circle cx="12" cy="12" r="4" />
+                        </svg>Fetch Location</button></div>
+            </div>
+            <div class="panel">
+                <div class="paneltitle"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M4 7h4l1.5-2h5L16 7h4v12H4Z" />
+                        <circle cx="12" cy="13" r="3.5" />
+                    </svg>Live check-in photo</div>
+                <div id="cameraText" class="statusline">Fetch a valid location before opening the camera.</div>
+                <div id="checkinPreview" class="photo-preview hidden"></div>
+                <div class="actions"><button class="btn secondary" id="cameraBtn" onclick="openLiveCamera()"
+                        disabled><svg class="icon" viewBox="0 0 24 24">
+                            <path d="M4 7h4l1.5-2h5L16 7h4v12H4Z" />
+                            <circle cx="12" cy="13" r="3.5" />
+                        </svg>Open Camera</button></div>
+                <div class="error" id="cameraErr"></div>
+            </div>
+            <div class="panel">
+                <div class="paneltitle">Ready to check in?</div>
+                <div class="statusline">Check-in time is the start of the Abhyasikha session. There is no separate
+                    Abhyasikha time field.</div>
+                <div class="error" id="checkinErr"></div>
+            </div>
+            <div class="mobile-actionbar">
+                <button class="btn secondary back" onclick="show('details')"><svg class="icon" viewBox="0 0 24 24">
+                        <path d="m15 18-6-6 6-6" />
+                    </svg>Back</button>
+                <div class="action-submit"><button class="btn primary" id="checkinBtn" onclick="checkInNow()"
+                        disabled><svg class="icon" viewBox="0 0 24 24">
+                            <path d="m6 12 4 4 8-8" />
+                        </svg>Check In</button></div>
+            </div>
+        </section>
+
+        <section id="checkout" class="screen">
+            <h2>Check-out</h2>
+            <p class="note">This page has no back button. The active session will remain available if the browser
+                refreshes.</p>
+            <div class="panel">
+                <div class="panelhead">
+                    <div>
+                        <div class="paneltitle"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M12 22s7-5.2 7-12A7 7 0 0 0 5 10c0 6.8 7 12 7 12Z" />
+                                <circle cx="12" cy="10" r="2.5" />
+                            </svg>Location verification</div>
+                        <div id="outLocText" class="statusline">Location permission is required.</div>
+                        <div id="outLocMeta" class="meta"></div>
+                    </div>
+                    <div id="outLocIcon" class="statusicon"><svg class="icon" viewBox="0 0 24 24">
+                            <path d="M12 22s7-5.2 7-12A7 7 0 0 0 5 10c0 6.8 7 12 7 12Z" />
+                            <circle cx="12" cy="10" r="2.5" />
+                        </svg></div>
+                </div>
+                <div class="actions"><button class="btn secondary" onclick="getCheckoutLocation()"><svg class="icon"
+                            viewBox="0 0 24 24">
+                            <path
+                                d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1" />
+                            <circle cx="12" cy="12" r="4" />
+                        </svg>Fetch Location</button></div>
+            </div>
+            <div class="panel">
+                <div class="paneltitle"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M4 7h4l1.5-2h5L16 7h4v12H4Z" />
+                        <circle cx="12" cy="13" r="3.5" />
+                    </svg>Live check-out photo</div>
+                <div id="outCameraText" class="statusline">Fetch a valid location before opening the camera.</div>
+                <div id="checkoutPreview" class="photo-preview hidden"></div>
+                <div class="actions"><button class="btn secondary" id="outCameraBtn" onclick="openCheckoutCamera()"
+                        disabled><svg class="icon" viewBox="0 0 24 24">
+                            <path d="M4 7h4l1.5-2h5L16 7h4v12H4Z" />
+                            <circle cx="12" cy="13" r="3.5" />
+                        </svg>Open Camera</button></div>
+                <div class="error" id="outCameraErr"></div>
+            </div>
+            <div class="panel">
+                <div class="paneltitle">Complete supervision</div>
+                <div class="statusline">Duration is calculated automatically from check-in time to check-out time.</div>
+                <div class="error" id="checkoutErr"></div>
+            </div>
+            <div class="mobile-actionbar">
+                <div class="action-submit"><button class="btn primary" id="checkoutBtn" onclick="checkoutNow()"
+                        disabled><svg class="icon" viewBox="0 0 24 24">
+                            <path d="m6 12 4 4 8-8" />
+                        </svg>Check Out</button></div>
+            </div>
+        </section>
+
+        <section id="previous" class="screen"><button class="btn secondary back" onclick="show('details')">Back to
+                Details</button>
+            <h2>Previous supervision</h2>
+            <p class="note">Enter the historical check-in and check-out. No separate Abhyasikha time is required.</p>
+            <div class="panel">
+                <div class="formgrid">
+                    <div class="field full"><label>Previous Check-in <span class="required">*</span></label><input
+                            id="pci" type="datetime-local">
+                        <div class="error" id="pciErr"></div>
+                    </div>
+                    <div class="field full"><label>Previous Check-out <span class="required">*</span></label><input
+                            id="pco" type="datetime-local">
+                        <div class="error" id="pcoErr"></div>
+                    </div>
+                    <div class="field"><label>Check-in Photo <span class="required">*</span></label><button
+                            class="btn secondary" onclick="openPreviousCamera('pin')">Open Camera</button>
+                        <div class="hint" id="pinMeta">No camera photo captured.</div>
+                        <div class="error" id="pinErr"></div>
+                    </div>
+                    <div class="field"><label>Check-out Photo <span class="required">*</span></label><button
+                            class="btn secondary" onclick="openPreviousCamera('pout')">Open Camera</button>
+                        <div class="hint" id="poutMeta">No camera photo captured.</div>
+                        <div class="error" id="poutErr"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="actions"><button class="btn primary" id="prevSave" onclick="savePrevious()">Save Previous
+                    Supervision</button></div>
+        </section>
+
+        <section id="feedback" class="screen">
+            <div class="feedback">
+                <div class="check"><svg class="icon" viewBox="0 0 24 24">
+                        <path d="m6 12 4 4 8-8" />
+                    </svg></div>
+                <h2>Today's supervision is complete</h2>
+                <p>The check-out has been recorded and the active session has expired. A new session will be created
+                    when you start the next check-in.</p>
+                <div id="feedbackSummary" class="panel summary"></div><button class="btn primary"
+                    onclick="newSession()">Back to Home</button>
+            </div>
+        </section>
+    </div>
+
+    <div id="cameraModal" class="camera-modal" aria-hidden="true">
+        <div class="camera">
+            <div class="camera-head"><strong>Live camera</strong><button class="iconbtn" onclick="closeCamera()"
+                    aria-label="Close camera"><svg class="icon" viewBox="0 0 24 24">
+                        <path d="M6 6l12 12M18 6 6 18" />
+                    </svg></button></div><video id="cameraVideo" autoplay playsinline muted></video>
+            <div id="modalCameraErr" class="error"></div>
+            <div class="camera-actions"><button class="btn secondary" onclick="closeCamera()">Cancel</button><button
+                    class="btn primary" onclick="capturePhoto()">Capture Photo</button></div>
+        </div>
+    </div>
+    <div id="toast" class="toast"></div>
+    <script src="app.js"></script>
+</body>
+
+</html>
